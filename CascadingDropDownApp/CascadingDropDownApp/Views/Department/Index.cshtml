@@ -1,0 +1,67 @@
+﻿@using System.Web.UI.WebControls
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+
+<select name="departmentId" id="department">
+    
+    @foreach (var department in ViewBag.Departments)
+    {
+        <option value="@department.DepartmentId">@department.Name</option>
+    }
+    
+
+</select>
+<br>
+<br>
+
+
+<select name="studentId" id="student">
+   
+</select>
+
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+<script>    
+
+   
+
+
+        $("#department").change(function() {
+
+            var departmentId = $("#department").val();
+            $("#student").empty();
+            var json = { departmentId: departmentId };
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetStudentsByDepartmentId", "Department")',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(json),
+                dataType: "json",
+                success: function (data) {
+                    $.each(data, function(key, value) {
+
+                             $("#student").append('<option value='+value.StudentId+'>'+value.Name + '</option>');
+
+                          });
+
+                },
+
+            });
+
+           
+
+
+        });
+
+
+   
+
+
+
+</script>
